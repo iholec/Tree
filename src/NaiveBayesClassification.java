@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Map;
 
 //todo: aufraeumenTreeClassification
@@ -41,5 +42,11 @@ public class NaiveBayesClassification extends Classification {
 			//System.out.println("Entry: " + entry + "\n was classified as Spam");
 			return "spam";
 		}
+	}
+
+	@Override
+	void init(ArrayList<DataEntry> trainingsData) {
+		// TODO Auto-generated method stub
+		
 	}
 }

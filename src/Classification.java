@@ -135,6 +135,8 @@ public abstract class Classification implements Runnable {
                 if (c != i)
                     trainingsData.addAll(dataBagList.get(c));
             }
+            
+            init(trainingsData);
 
             // Testen
             double accuracy = 0;
@@ -212,6 +214,14 @@ public abstract class Classification implements Runnable {
 	@Override
 	public void run() {
 
+		 // Alle andern bags werden zum training verwendet
+        ArrayList<DataEntry> trainingsData = new ArrayList<DataEntry>();
+        for (DataBag dataEntrys : dataBagList) {
+			trainingsData.addAll(dataEntrys);
+		}
+        
+        init(trainingsData);
+		
 		// find kNN
 		for (DataEntry entry : dataToClassify) {
 			String bestClassifyer = findClassifyer(entry);
@@ -226,6 +236,8 @@ public abstract class Classification implements Runnable {
 		System.out.println("Time for classifying " + dataToClassify.size() + " lines of data: " + runTime);
 
 	}
+
+	abstract void init(ArrayList<DataEntry> trainingsData);
 
 	abstract String findClassifyer(DataEntry entry);
 

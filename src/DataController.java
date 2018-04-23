@@ -23,8 +23,14 @@ class DataController {
 		smsText = replaceVariableThingsThatAreActuallyTheSame(smsText);
 		//Replace . , : ,
 		smsText = replacePunctuationMarks(smsText);
-
+		
+		smsText = smsText.toLowerCase();
+		
 		String[] smsWords = smsText.split("\\s+");
+		
+		entry.setWordCount(smsWords.length);
+		
+		//System.out.println("Words: "+smsWords.length);
 		for (String smsWord : smsWords) {
 			//System.out.print(smsWord + " ");
 			if (entry.containsWord(smsWord)) {
@@ -108,7 +114,7 @@ class DataController {
 		smsText = smsText.replaceAll("(euros?|pounds?|dollars?|[€$£p]) ?\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})?", " #priceReplacement ");
 		smsText = smsText.replaceAll("\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})? ?(euros?|pounds?|dollars?|[€$£p])", " #priceReplacement ");
 		//System.out.println("Replacing hidden telephone numbers of sms : \n" + smsText);
-		smsText = smsText.replaceAll("[+]*\\d{2,}([xX]{3,}|[*]{3,}[0-9]*)", " #hiddenNumberReplacement ");
+		smsText = smsText.replaceAll("[+]*\\d{2,}([xX]{3,}|[*]{3,}[0-9]*)", " #numberReplacementHidden ");
 		//System.out.println(smsText);
 		//System.out.println("Replacing telephone numbers of sms : \n" + smsText);
 		smsText = smsText.replaceAll("[+]*\\d{5,}", " #numberReplacement ");//5 is minimum phone number length
@@ -121,10 +127,10 @@ class DataController {
 		//System.out.println(smsText);
 		//System.out.println("Replacing http sites of sms : \n" + smsText);
 		smsText = smsText.replaceAll("\\. ", "."); //Fix misspelled urls
-		smsText = smsText.replaceAll("[A-Za-z]*https?[:]*//[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]", " #httpWebsiteReplacement "); //ALWAYS Spam
+		smsText = smsText.replaceAll("[A-Za-z]*https?[:]*//[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]", " #websiteReplacementHttp "); //ALWAYS Spam
 		//System.out.println(smsText);
 		//System.out.println("Replacing web sites of sms : \n" + smsText);
-		smsText = smsText.replaceAll("[A-Za-z/:]*www.[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]", " #normalWebsiteReplacement ");
+		smsText = smsText.replaceAll("[A-Za-z/:]*www.[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]", " #websiteReplacementNormal ");
 		//System.out.println(smsText);
 		//Except for 1 ALWAYS Spam, would also filter http -> needs to be done afterwards
 		return smsText;
