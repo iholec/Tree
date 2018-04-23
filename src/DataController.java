@@ -23,6 +23,9 @@ class DataController {
         String[] smsWords = smsText.split("\\s+");
 		for (String smsWord : smsWords){
 			int wordCount = entry.get(smsWord);
+			if(wordCount==0){
+			    wordCount = 1;
+            }
 			entry.add(smsWord, wordCount);
 		}
     }

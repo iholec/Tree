@@ -6,14 +6,14 @@ public abstract class Classification implements Runnable {
     private Thread th;
     private Date start;
 
-    private ArrayList<DataBag> dataBagList = new ArrayList<>();
-    private HashMap<String, Integer> correctLearningDataValues = new HashMap<>();
+    protected ArrayList<DataBag> dataBagList = new ArrayList<>();
+    protected HashMap<String, Integer> correctLearningDataValues = new HashMap<>();
 
-    private ConfusionMatrix confusionMatrix;
-    private Statistic statistic = new Statistic();
+    protected ConfusionMatrix confusionMatrix;
+    protected Statistic statistic = new Statistic();
 
-    private int dataBags = 10;
-    private int k = 7;
+    protected int dataBags = 10;
+    protected int k = 7;
 
 
     Classification(int k) {
@@ -24,6 +24,10 @@ public abstract class Classification implements Runnable {
     Classification(int k, int dataBags) {
         this(k);
         this.dataBags = dataBags;
+    }
+
+    private void createFrequencyTable(){
+
     }
 
     /**
@@ -92,49 +96,9 @@ public abstract class Classification implements Runnable {
     }
 
     @Override
-    public void run() {
-        for (int i = 0; i < dataBags; i++) {
+    public abstract void run();
 
-            // Alle bags werden zum classifizieren verwendet
-            ArrayList<DataEntry> trainingsData = new ArrayList<>();
-            for (DataBag dataBag : dataBagList) {
-                trainingsData.addAll(dataBag);
-            }
-
-            // find kNN
-            for (DataEntry entry : statistic.entries) {
-                //EuklidianDistanceComparator comperator = new EuklidianDistanceComparator(entry);
-                //Collections.sort(trainingsData, comperator);
-
-                // Zahlen der meisten vorkommsisse
-                HashMap<String, Integer> classifyer = new HashMap<String, Integer>();
-                for (int c = 0; c < k; c++) {
-                    if (!classifyer.containsKey(trainingsData.get(c).getKeyValue())) {
-                        classifyer.put(trainingsData.get(c).getKeyValue(), 0);
-                    }
-                    classifyer.put(trainingsData.get(c).getKeyValue(), classifyer.get(trainingsData.get(c).getKeyValue()) + 1);
-                }
-
-                // Find best fit
-                int biggestValue = 0;
-                String bestClassifyer = "";
-                for (String key : classifyer.keySet()) {
-                    if (biggestValue < classifyer.get(key)) {
-                        biggestValue = classifyer.get(key);
-                        bestClassifyer = key;
-                    }
-                }
-
-                // System.out.println("Entry: " + entry + "\n was classified as
-                // " + bestClassifyer);
-            }
-        }
-
-        calculateTime();
-
-    }
-
-    private void calculateTime(){
+    protected void calculateTime(){
         long millis = new Date().getTime() - start.getTime();
         String runTime = String.format("%d min, %d sec, %d milli sec", TimeUnit.MILLISECONDS.toMinutes(millis), TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)), millis % 1000);
         System.out.println("Time for classifying " + statistic.entries.size() + " lines of data: " + runTime);
@@ -143,7 +107,7 @@ public abstract class Classification implements Runnable {
     /**
      * Startet den Lernprozess
      */
-    private void learn() {
+    private void learn() {//what
         createConfusionMatrix(dataBagList);
 
         ArrayList<HashMap<String, Integer>> confusionMatratzen = new ArrayList<>();
