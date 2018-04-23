@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+﻿import java.util.ArrayList;
 
 public class Main {
 
@@ -7,9 +7,10 @@ public class Main {
 		ArrayList<DataEntry> learningData = DataController.parseLearningData("data/SMSSpamCollection", "\n", "\\s");
 
 		NaiveBayesClassification algorithm = new NaiveBayesClassification();
+
 		//TreeClassification algorithm = new TreeClassification();
 
-		algorithm.learn(learningData);
+		//algorithm.learn(learningData);
 
 		//		ArrayList<DataEntry> testData1000 = new ArrayList<>();
 		//		for (int i = 0; i < 1000; i++) {
@@ -26,9 +27,9 @@ public class Main {
 //
 //		algorithm.classify(testData100);
 
-//		Statistic stats = new Statistic(learningData);
-//		stats.analyzeEntries();
-//		System.out.println(stats);
+		Statistic stats = new Statistic(learningData);
+		stats.analyzeEntries();
+		System.out.println(stats);
 
 		//todo statistic übergeben
 		//todo vergleichen

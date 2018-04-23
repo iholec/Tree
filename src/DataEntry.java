@@ -8,6 +8,8 @@ class DataEntry {
     private Map<String, Integer> wordList = new HashMap<>();
     private int characterCount;
 
+    private int wordsInUpperCase = 0;
+    
     void setKeyValue(String keyValue) {
         this.keyValue = keyValue;
     }
@@ -39,4 +41,14 @@ class DataEntry {
     void setcharacterCount(int characterCount) {
         this.characterCount = characterCount;
     }
+
+	public int getWordsInUpperCase() {
+		return wordsInUpperCase;
+	}
+
+	public void setWordsInUpperCase(int wordsInUpperCase) {
+		this.wordsInUpperCase = wordsInUpperCase;
+	}
+    
+    
 }
