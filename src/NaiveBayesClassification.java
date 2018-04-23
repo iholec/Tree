@@ -10,27 +10,31 @@ public class NaiveBayesClassification extends Classification {
 
 		double spamProbability = 1;
 		double hamProbability = 1;
-		for (Map.Entry<String, Integer> word : entry.getWordList().entrySet()) {
+		for (String word : entry.getWordList()) {
+
 			double wordSpamOccurrences;
 			double spamFrequency = 1;
-			if (statistic.spamWordStatistic.containsKey(word.getKey())) {
-				wordSpamOccurrences = statistic.spamWordStatistic.get(word.getKey());
-				spamFrequency = (wordSpamOccurrences + 1) / (statistic.spamCount + statistic.getUniqueWordCount()); //Laplace Soothing
+			if (statistic.spamWordStatistic.containsKey(word)) {
+				wordSpamOccurrences = statistic.spamWordStatistic.get(word);
+				spamFrequency = (wordSpamOccurrences + 1) / (statistic.spamWords + statistic.uniqueWordCount); //Laplace Soothing
+				spamFrequency = spamFrequency * entry.get(word);
 			}
 			spamProbability = spamProbability * spamFrequency;
 
 			double wordHamOccurrences;
 			double hamFrequency = 1;
-			if (statistic.spamWordStatistic.containsKey(word.getKey())) {
-				wordHamOccurrences = statistic.spamWordStatistic.get(word.getKey());
-				hamFrequency = (wordHamOccurrences + 1) / (statistic.hamCount + statistic.getUniqueWordCount()); //Laplace Soothing
+			if (statistic.hamWordStatistic.containsKey(word)) {
+				wordHamOccurrences = statistic.hamWordStatistic.get(word);
+				hamFrequency = (wordHamOccurrences + 1) / (statistic.hamWords + statistic.uniqueWordCount); //Laplace Soothing
+				hamFrequency = hamFrequency * entry.get(word);
 			}
 			hamProbability = hamProbability * hamFrequency;
+
 		}
 		double isSpam = spamProbability * P_Spam;
 		double isHam = hamProbability * P_Ham;
 
-		if (isHam >= isSpam) {//im Zweifelsfall ist es Spam
+		if (isHam > isSpam) {//im Zweifelsfall ist es Ham
 			//System.out.println("Entry: " + entry + "\n was classified as Ham");
 			return "ham";
 		} else {
