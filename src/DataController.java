@@ -33,22 +33,22 @@ class DataController {
     private static  String replaceVariableThingsThatAreActuallyTheSame (String smsText){
         //todo:  preisangaben durch Wort ersetzten
 		System.out.println("Replacing hidden telephone numbers of sms : \n" + smsText);
-		smsText = smsText.replaceAll("[+]*\\d{2,}([xX]{3,}|[*]{3,}[0-9]*)", "hiddenNumberReplacement");
+		smsText = smsText.replaceAll("[+]*\\d{2,}([xX]{3,}|[*]{3,}[0-9]*)", " hiddenNumberReplacement ");
 		System.out.println(smsText);
 		System.out.println("Replacing telephone numbers of sms : \n" + smsText);
-		smsText = smsText.replaceAll("[+]*\\d{5,}", "numberReplacement");//5 is minimum phone number length
+		smsText = smsText.replaceAll("[+]*\\d{5,}", " numberReplacement ");//5 is minimum phone number length
 		System.out.println(smsText);
 		System.out.println("Replacing weird stars of sms : \n" + smsText);
-		smsText = smsText.replaceAll("[*]{5,}", "weirdStarsReplacement");//5 is minimum phone number length/more than 5 stars without stuff always spam
+		smsText = smsText.replaceAll("[*]{5,}", " weirdStarsReplacement ");//5 is minimum phone number length/more than 5 stars without stuff always spam
 		System.out.println(smsText);
 		System.out.println("Replacing emails of sms : \n" + smsText);
-		smsText = smsText.replaceAll("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)])", "emailReplacement");  //this is fine
+		smsText = smsText.replaceAll("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)])", " emailReplacement ");  //this is fine
 		System.out.println(smsText);
 		System.out.println("Replacing http sites of sms : \n" + smsText);
-		smsText = smsText.replaceAll("[A-Za-z]*http[:]*//[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]", "httpWebsiteReplacement");  //ALWAYS Spam
+		smsText = smsText.replaceAll("[A-Za-z]*http[:]*//[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]", " httpWebsiteReplacement ");  //ALWAYS Spam
 		System.out.println(smsText);
 		System.out.println("Replacing web sites of sms : \n" + smsText);
-		smsText = smsText.replaceAll("[A-Za-z/:]*www.[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]", "normalWebsiteReplacement");
+		smsText = smsText.replaceAll("[A-Za-z/:]*www.[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]", " normalWebsiteReplacement ");
         System.out.println(smsText);
         //Except for 1 ALWAYS Spam, would also filter http -> needs to be done afterwards
         return smsText;

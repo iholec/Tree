@@ -64,6 +64,7 @@ public class Statistic {
         getWordCount(hamCount,hamWordStatistic);
         getWordCount(spamCount, spamWordStatistic);
         getCompleteWordCount();
+        printMaps();
     }
 
     private void fillMap(Map<String,Integer> map, DataEntry entry){
@@ -93,6 +94,17 @@ public class Statistic {
             if(!hamWordStatistic.containsKey(word.getKey())){
                 differentWords ++;
             }
+        }
+    }
+
+    private void printMaps(){
+        System.out.println("Ham Word Statistic");
+        for (Map.Entry<String, Integer> word : hamWordStatistic.entrySet()) {
+            System.out.println(word.getKey() + ": "  + word.getValue());
+        }
+        System.out.println("Spam Word Statistic");
+        for (Map.Entry<String, Integer> word : spamWordStatistic.entrySet()) {
+            System.out.println(word.getKey() + ": "  + word.getValue());
         }
     }
 
