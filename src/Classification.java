@@ -13,16 +13,15 @@ public abstract class Classification implements Runnable {
     protected Statistic statistic = null;
 
     protected int dataBags = 10;
-    protected int k = 7;
+    
+    protected ArrayList<DataEntry> dataToClassify = new ArrayList<>();
 
-
-    Classification(int k) {
-        this.k = k;
+    Classification() {
         th = new Thread(this);
     }
 
-    Classification(int k, int dataBags) {
-        this(k);
+    Classification(int dataBags) {
+    	this();
         this.dataBags = dataBags;
     }
 
@@ -34,7 +33,7 @@ public abstract class Classification implements Runnable {
      * Zum hinzufügen von Trainingsdaten
      * @param learningData
      */
-    private void addLearningData(ArrayList<DataEntry> learningData) {
+    private void setLearningData(ArrayList<DataEntry> learningData) {
 
         Collections.shuffle(learningData);
         
@@ -64,7 +63,7 @@ public abstract class Classification implements Runnable {
      * @param learningData
      */
     public void learn(ArrayList<DataEntry> learningData) {
-        addLearningData(learningData);
+        setLearningData(learningData);
         learn();
     }
 
@@ -86,25 +85,23 @@ public abstract class Classification implements Runnable {
         confusionMatrix = new ConfusionMatrix(new ArrayList<>(uniqueKeys));
     }
 
-    public void classify() {
-        System.out.println("Start classifying " + statistic.entries.size() + " lines of data now!");
+    public void classify(ArrayList<DataEntry> data) {
+    	dataToClassify = data;
+        System.out.println("Start classifying " + data.size() + " lines of data now!");
         start = new Date(); // Zum messen der Zeit
         th.start();
     }
 
-    @Override
-    public abstract void run();
-
-    protected void calculateTime(){
-        long millis = new Date().getTime() - start.getTime();
-        String runTime = String.format("%d min, %d sec, %d milli sec", TimeUnit.MILLISECONDS.toMinutes(millis), TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)), millis % 1000);
-        System.out.println("Time for classifying " + statistic.entries.size() + " lines of data: " + runTime);
-    }
+//    protected void calculateTime(){
+//        long millis = new Date().getTime() - start.getTime();
+//        String runTime = String.format("%d min, %d sec, %d milli sec", TimeUnit.MILLISECONDS.toMinutes(millis), TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)), millis % 1000);
+//        System.out.println("Time for classifying " + statistic.entries.size() + " lines of data: " + runTime);
+//    }
 
     /**
      * Startet den Lernprozess
      */
-    private void learn() {//what
+    private void learn() {
         createConfusionMatrix(dataBagList);
 
         ArrayList<HashMap<String, Integer>> confusionMatratzen = new ArrayList<>();
@@ -141,29 +138,35 @@ public abstract class Classification implements Runnable {
 
             // Testen
             double accuracy = 0;
-            for (DataEntry entry : forTest) {
-                //EuklidianDistanceComparator comperator = new EuklidianDistanceComparator(entry);
-                //Collections.sort(trainingsData, comperator);
+            for (DataEntry entry : forTest) {    
 
-                // Zahlen der meisten vorkommsisse
-                HashMap<String, Integer> classifyer = new HashMap<String, Integer>();
-                for (int c = 0; c < k; c++) {
-                    if (!classifyer.containsKey(trainingsData.get(c).getKeyValue())) {
-                        classifyer.put(trainingsData.get(c).getKeyValue(), 0);
-                    }
-                    classifyer.put(trainingsData.get(c).getKeyValue(), classifyer.get(trainingsData.get(c).getKeyValue()) + 1);
-                }
+                String bestClassifyer = findClassifyer(entry);
+                               
+//            	//==================== dieser abschnitt ist kNN ==========================
+//            	//EuklidianDistanceComparator comperator = new EuklidianDistanceComparator(entry);
+//                //Collections.sort(trainingsData, comperator);
+//            	// Zahlen der meisten vorkommsisse
+//            	 HashMap<String, Integer> classifyer = new HashMap<String, Integer>();
+//                for (int c = 0; c < k; c++) {
+//                    if (!classifyer.containsKey(trainingsData.get(c).getKeyValue())) {
+//                        classifyer.put(trainingsData.get(c).getKeyValue(), 0);
+//                    }
+//                    classifyer.put(trainingsData.get(c).getKeyValue(), classifyer.get(trainingsData.get(c).getKeyValue()) + 1);
+//                }
+//                
+//
+//                // Find best fit
+//                int biggestValue = 0;
+//                String bestClassifyer = "";
+//                for (String key : classifyer.keySet()) {
+//                    if (biggestValue < classifyer.get(key)) {
+//                        biggestValue = classifyer.get(key);
+//                        bestClassifyer = key;
+//                    }
+//                }
+//                //======================================================================
 
-                // Find best fit
-                int biggestValue = 0;
-                String bestClassifyer = "";
-                for (String key : classifyer.keySet()) {
-                    if (biggestValue < classifyer.get(key)) {
-                        biggestValue = classifyer.get(key);
-                        bestClassifyer = key;
-                    }
-                }
-
+                // classifyer setzten
                 if (!confusionM.containsKey(bestClassifyer)) {
                     confusionM.put(bestClassifyer, 0);
                 }
@@ -205,5 +208,25 @@ public abstract class Classification implements Runnable {
         System.out.println(confusionMatrix);
 
     }
+    
+	@Override
+	public void run() {
+
+		// find kNN
+		for (DataEntry entry : dataToClassify) {
+			String bestClassifyer = findClassifyer(entry);
+			
+			// System.out.println("Entry: " + entry + "\n was classified as
+			// " + bestClassifyer);
+
+		}
+
+		long millis = new Date().getTime() - start.getTime();
+		String runTime = String.format("%d min, %d sec, %d milli sec", TimeUnit.MILLISECONDS.toMinutes(millis), TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)), millis % 1000);
+		System.out.println("Time for classifying " + dataToClassify.size() + " lines of data: " + runTime);
+
+	}
+
+	abstract String findClassifyer(DataEntry entry);
 
 }

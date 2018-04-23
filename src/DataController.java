@@ -29,7 +29,7 @@ class DataController {
 			} else {
 				boolean spellcheck = false;
 				for (String word : entry.getWordList().keySet()) {
-					if (StringCompare.compare(smsWord, word) <= 0.1) {
+					if (StringCompare.compare(smsWord, word) <= 0.15) {
 						System.out.println(smsWord + " | " + word + " : " + StringCompare.compare(smsWord, word));
 						spellcheck = true;
 					}
@@ -56,10 +56,10 @@ class DataController {
 		smsText = smsText.replace("]", " ");
 		smsText = smsText.replace(" '", " ");
 		smsText = smsText.replace("' ", " ");
-		smsText = smsText.replace(" \"", " ");
-		smsText = smsText.replace("\" ", " ");
+		smsText = smsText.replace("\"", " ");
 		smsText = smsText.replace("<", " ");
 		smsText = smsText.replace(">", " ");
+		smsText = smsText.replace(" @", " ");
 		return smsText;
 	}
 

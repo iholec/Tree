@@ -5,14 +5,6 @@ import java.util.concurrent.TimeUnit;
 //todo: aufraeumenTreeClassification
 public class NaiveBayesClassification extends Classification {
 
-	public NaiveBayesClassification(int k) {
-		super(k);
-	}
-
-	public NaiveBayesClassification(int k, int dataBags) {
-		super(k, dataBags);
-	}
-
 	@Override
 	public void run() {
 		for (int i = 0; i < dataBags; i++) {
@@ -59,4 +51,10 @@ public class NaiveBayesClassification extends Classification {
 			}
 		calculateTime();
 		}
+
+	@Override
+	String findClassifyer(DataEntry entry) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	}
