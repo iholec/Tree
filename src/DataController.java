@@ -16,6 +16,9 @@ class DataController {
 	private static void analyzeString(String smsText, DataEntry entry) {
 		//System.out.println(smsText);
 		entry.setcharacterCount(smsText.length());
+
+		entry.setWordsInUpperCase(countUppercase(smsText));
+
 		smsText = smsText.toLowerCase(); //let's ignore all caps
 		smsText = replaceVariableThingsThatAreActuallyTheSame(smsText);
 		//Replace . , : ,
@@ -45,6 +48,37 @@ class DataController {
 		//System.out.println("\n" + entry.getWordList());
 		//System.out.println(smsWords.length + " | " + entry.getWordList().keySet().size());
 
+	}
+
+	private static int countUppercase(String smsText) {
+		int count = 0;
+
+		String temp = smsText = replacePunctuationMarks(smsText);
+
+		String[] smsWords = temp.split("\\s+");
+		for (String smsWord : smsWords) {
+			boolean hasLetters = false;
+			for (Character letter : smsWord.toCharArray()) {
+				if (Character.isAlphabetic(letter)) {
+					hasLetters = true;
+					break;
+				}
+			}
+
+			if (hasLetters) {
+				boolean hasLower = false;
+				for (Character letter : smsWord.toCharArray()) {
+					if (Character.isLowerCase(letter)) {
+						hasLower = true;
+						break;
+					}
+				}
+				if (!hasLower) {
+					count++;
+				}
+			}
+		}
+		return count;
 	}
 
 	private static String replacePunctuationMarks(String smsText) {
