@@ -56,6 +56,8 @@ class DataController {
 		smsText = smsText.replace("]", " ");
 		smsText = smsText.replace(" '", " ");
 		smsText = smsText.replace("' ", " ");
+		smsText = smsText.replace(" \"", " ");
+		smsText = smsText.replace("\" ", " ");
 		smsText = smsText.replace("<", " ");
 		smsText = smsText.replace(">", " ");
 		return smsText;
