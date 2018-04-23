@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,8 +24,12 @@ class DataEntry {
         wordList.put(key,value);
     }
 
-    public Map<String, Integer> getWordList() {
-        return wordList;
+    public boolean containsWord(String word) {
+    	return wordList.containsKey(word);
+    }
+    
+    public ArrayList<String> getWordList() {
+        return new ArrayList<String>(wordList.keySet());
     }
 
     public int getCharacterCount() {

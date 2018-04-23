@@ -42,7 +42,7 @@ public class Statistic {
 				hamSum += entry.getCharacterCount();
 				hamCount++;
 				//Spellcheck
-				for (String newWord : entry.getWordList().keySet()) {
+				for (String newWord : entry.getWordList()) {
 					if (hamWordStatistic.containsKey(newWord)) {
 						hamWordStatistic.put(newWord, hamWordStatistic.get(newWord) + entry.get(newWord));
 					} else {
@@ -64,7 +64,7 @@ public class Statistic {
 				spamSum += entry.getCharacterCount();
 				spamCount++;
 				//Spellcheck
-				for (String newWord : entry.getWordList().keySet()) {
+				for (String newWord : entry.getWordList()) {
 					if (spamWordStatistic.containsKey(newWord)) {
 						spamWordStatistic.put(newWord, spamWordStatistic.get(newWord) + entry.get(newWord));
 					} else {

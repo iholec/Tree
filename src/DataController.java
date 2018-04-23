@@ -24,11 +24,11 @@ class DataController {
 		String[] smsWords = smsText.split("\\s+");
 		for (String smsWord : smsWords) {
 			//System.out.print(smsWord + " ");
-			if (entry.getWordList().containsKey(smsWord)) {
+			if (entry.containsWord(smsWord)) {
 				entry.add(smsWord, entry.get(smsWord) + 1);
 			} else {
 				boolean spellcheck = false;
-				for (String word : entry.getWordList().keySet()) {
+				for (String word : entry.getWordList()) {
 					if (StringCompare.compare(smsWord, word) > StringCompare.PROBABILITY) {
 						//System.out.println(smsWord + " | " + word + " : " + StringCompare.compare(smsWord, word));
 						entry.add(word, entry.get(word) + 1);
