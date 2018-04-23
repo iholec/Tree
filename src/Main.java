@@ -6,8 +6,8 @@ public class Main {
 
 		ArrayList<DataEntry> learningData = DataController.parseLearningData("data/SMSSpamCollection", "\n", "\\s");
 
-		//NaiveBayesClassification algorithm = new NaiveBayesClassification();
-		TreeClassification algorithm = new TreeClassification();
+		NaiveBayesClassification algorithm = new NaiveBayesClassification();
+		//TreeClassification algorithm = new TreeClassification();
 
 		algorithm.learn(learningData);
 
