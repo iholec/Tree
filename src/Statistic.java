@@ -99,8 +99,8 @@ public class Statistic {
 		standardDeviationHamLength = sqrt(hamDeviation / averageHamLength - 1);
 		standardDeviationSpamLength = sqrt(spamDeviation / averageSpamLength - 1);
 
-		hamCount = getWordCount(hamWordStatistic);
-		spamCount = getWordCount(spamWordStatistic);
+		hamWords = getWordCount(hamWordStatistic);
+		spamWords = getWordCount(spamWordStatistic);
 	}
 
 	private int getWordCount(Map<String, Integer> map) {
@@ -126,9 +126,9 @@ public class Statistic {
 		getUniqueWordCount();
 		//printMaps();
 		String str = "";
-		str += "Total: " + getUniqueWordCount() + "\n";
-		str += "Ham: " + hamCount + "\n";
-		str += "Spam: " + spamCount + "\n";
+		str += "Unique words: " + getUniqueWordCount() + "\n";
+		str += "Ham words: " + hamWords + "\n";
+		str += "Spam words: " + spamWords + "\n";
 		return str;
 	}
 
