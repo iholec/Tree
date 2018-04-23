@@ -1,4 +1,4 @@
-﻿import java.util.ArrayList;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -10,7 +10,7 @@ public class Main {
 
 		//TreeClassification algorithm = new TreeClassification();
 
-		//algorithm.learn(learningData);
+		algorithm.learn(learningData);
 
 		//		ArrayList<DataEntry> testData1000 = new ArrayList<>();
 		//		for (int i = 0; i < 1000; i++) {

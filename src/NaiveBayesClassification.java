@@ -5,8 +5,8 @@ public class NaiveBayesClassification extends Classification {
 
 	@Override
 	String findClassifyer(DataEntry entry) {
-		double P_Spam = statistic.spamCount / statistic.entries.size();
-		double P_Ham = statistic.hamCount / statistic.entries.size();
+		double P_Spam = (double)statistic.spamCount / (double)statistic.entries.size();
+		double P_Ham = (double)statistic.hamCount /(double) statistic.entries.size();
 
 		double spamProbability = 1;
 		double hamProbability = 1;
@@ -15,8 +15,8 @@ public class NaiveBayesClassification extends Classification {
 			double wordSpamOccurrences;
 			double spamFrequency = 1;
 			if (statistic.spamWordStatistic.containsKey(word)) {
-				wordSpamOccurrences = statistic.spamWordStatistic.get(word);
-				spamFrequency = (wordSpamOccurrences + 1) / (statistic.spamWords + statistic.uniqueWordCount); //Laplace Soothing
+				wordSpamOccurrences = (double)statistic.spamWordStatistic.get(word);
+				spamFrequency = (wordSpamOccurrences + 1) / ((double)statistic.spamWords + (double)statistic.uniqueWordCount); //Laplace Soothing
 				spamFrequency = spamFrequency * entry.get(word);
 			}
 			spamProbability = spamProbability * spamFrequency;
@@ -24,8 +24,8 @@ public class NaiveBayesClassification extends Classification {
 			double wordHamOccurrences;
 			double hamFrequency = 1;
 			if (statistic.hamWordStatistic.containsKey(word)) {
-				wordHamOccurrences = statistic.hamWordStatistic.get(word);
-				hamFrequency = (wordHamOccurrences + 1) / (statistic.hamWords + statistic.uniqueWordCount); //Laplace Soothing
+				wordHamOccurrences = (double)statistic.hamWordStatistic.get(word);
+				hamFrequency = (wordHamOccurrences + 1) / ((double)statistic.hamWords + (double)statistic.uniqueWordCount); //Laplace Soothing
 				hamFrequency = hamFrequency * entry.get(word);
 			}
 			hamProbability = hamProbability * hamFrequency;
