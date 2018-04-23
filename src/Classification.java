@@ -10,7 +10,7 @@ public abstract class Classification implements Runnable {
     protected HashMap<String, Integer> correctLearningDataValues = new HashMap<>();
 
     protected ConfusionMatrix confusionMatrix;
-    protected Statistic statistic = new Statistic();
+    protected Statistic statistic = null;
 
     protected int dataBags = 10;
     protected int k = 7;
@@ -37,6 +37,9 @@ public abstract class Classification implements Runnable {
     private void addLearningData(ArrayList<DataEntry> learningData) {
 
         Collections.shuffle(learningData);
+        
+        statistic = new Statistic(learningData);
+		statistic.analyzeEntries();
 
         int bagSize = learningData.size() / dataBags;
 
@@ -81,12 +84,6 @@ public abstract class Classification implements Runnable {
         }
 
         confusionMatrix = new ConfusionMatrix(new ArrayList<>(uniqueKeys));
-    }
-
-    public void classify(ArrayList<DataEntry> data) {
-        statistic.entries = data;
-        statistic.analyzeEntries();
-        classify();
     }
 
     public void classify() {

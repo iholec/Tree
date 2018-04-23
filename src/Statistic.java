@@ -23,6 +23,10 @@ public class Statistic {
 
     public double standardDeviationHamLength;
     public double standardDeviationSpamLength;
+    
+    public Statistic(List<DataEntry> data) {
+		entries = data;
+	}
 
     public void analyzeEntries() {
         double hamSum = 0;
@@ -95,6 +99,14 @@ public class Statistic {
                 differentWords ++;
             }
         }
+    }
+    
+    @Override
+    public String toString() {
+    	String str = "";
+    	str += "Ham: "+ hamCount + "\n";
+    	str += "Spam: "+ spamCount + "\n";
+    	return str;
     }
 
     private void printMaps(){
