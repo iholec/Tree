@@ -4,8 +4,10 @@ public class Main {
 
     public static void main(String[] args) {
 
-        ArrayList<DataEntry> learningData = DataController.parseLearningData(System.getProperty("user.dir")+"/data/SMSSpamCollection", "\n" ,"\\s");
-        //todo statistic groß
+        ArrayList<DataEntry> learningData = DataController.parseLearningData("data/SMSSpamCollection", "\n" ,"\\s");
+        Statistic stats = new Statistic(learningData);
+        stats.analyzeEntries();
+        System.out.println(stats);
         //todo statistic übergeben
         //todo vergleichen
     }
