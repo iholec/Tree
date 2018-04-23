@@ -15,7 +15,7 @@ public class NaiveBayesClassification extends Classification {
 			double spamFrequency = 1;
 			if (statistic.spamWordStatistic.containsKey(word.getKey())) {
 				wordSpamOccurrences = statistic.spamWordStatistic.get(word.getKey());
-				spamFrequency = (wordSpamOccurrences + 1) / (statistic.spamCount + statistic.differentWords); //Laplace Soothing
+				spamFrequency = (wordSpamOccurrences + 1) / (statistic.spamCount + statistic.getCompleteWordCount()); //Laplace Soothing
 			}
 			spamProbability = spamProbability * spamFrequency;
 
@@ -23,7 +23,7 @@ public class NaiveBayesClassification extends Classification {
 			double hamFrequency = 1;
 			if (statistic.spamWordStatistic.containsKey(word.getKey())) {
 				wordHamOccurrences = statistic.spamWordStatistic.get(word.getKey());
-				hamFrequency = (wordHamOccurrences + 1) / (statistic.hamCount + statistic.differentWords); //Laplace Soothing
+				hamFrequency = (wordHamOccurrences + 1) / (statistic.hamCount + statistic.getCompleteWordCount()); //Laplace Soothing
 			}
 			hamProbability = hamProbability * hamFrequency;
 		}

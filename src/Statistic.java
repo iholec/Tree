@@ -16,8 +16,7 @@ public class Statistic {
 
     public double hamCount;
     public double spamCount;
-    public double differentWords;
-
+   
     public double spamWords;
     public double hamWords;
 
@@ -67,8 +66,6 @@ public class Statistic {
         }
         getWordCount(hamCount,hamWordStatistic);
         getWordCount(spamCount, spamWordStatistic);
-        getCompleteWordCount();
-        printMaps();
     }
 
     private void fillMap(Map<String,Integer> map, DataEntry entry){
@@ -90,7 +87,8 @@ public class Statistic {
         }
     }
 
-    private void getCompleteWordCount(){
+    public int getCompleteWordCount(){
+    	int differentWords = 0;
         for (Map.Entry<String, Integer> word : hamWordStatistic.entrySet()) {
             differentWords ++;
         }
@@ -99,11 +97,15 @@ public class Statistic {
                 differentWords ++;
             }
         }
+        return differentWords;
     }
     
     @Override
     public String toString() {
+    	getCompleteWordCount();
+        //printMaps();
     	String str = "";
+    	str += "Total: "+ getCompleteWordCount() + "\n";
     	str += "Ham: "+ hamCount + "\n";
     	str += "Spam: "+ spamCount + "\n";
     	return str;
