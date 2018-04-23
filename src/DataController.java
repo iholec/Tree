@@ -39,6 +39,7 @@ class DataController {
 				}
 			}
 		}
+
 	}
 
 	private static String replacePunctuationMarks(String smsText) {
@@ -86,7 +87,6 @@ class DataController {
 		//Except for 1 ALWAYS Spam, would also filter http -> needs to be done afterwards
 		return smsText;
 	}
-
 
 	private static ArrayList<DataEntry> parseLearningData(String path, String entryDelimiter, String valueDelimiter, int indexOfKey) {
 
