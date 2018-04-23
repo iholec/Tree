@@ -2,6 +2,8 @@ import java.util.ArrayList;
 
 public class StringCompare {
 
+	public static final double PROBABILITY = 0.85;
+
 	/**
 	 * Returns the distance between the two words
 	 * 
@@ -62,13 +64,13 @@ public class StringCompare {
 		//		System.out.println(sameLetters);
 		//		System.out.println(combinedetters);
 
-		if ((double) (1.0f - ((double) sameLetters.size() / (double) combinedetters.size())) == 0) {
+		if ((double)((double) sameLetters.size() / (double) combinedetters.size()) == 1) {
 			if(!string1.equals(string2)) {
-				return 1;
+				return 0;
 			}
 		}
 
-		return (double) (1.0f - ((double) sameLetters.size() / (double) combinedetters.size()));
+		return (double) (double) sameLetters.size() / (double) combinedetters.size();
 	}
 
 }

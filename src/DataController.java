@@ -20,7 +20,7 @@ class DataController {
 		smsText = replaceVariableThingsThatAreActuallyTheSame(smsText);
 		//Replace . , : ,
 		smsText = replacePunctuationMarks(smsText);
-		
+
 		String[] smsWords = smsText.split("\\s+");
 		for (String smsWord : smsWords) {
 			//System.out.print(smsWord + " ");
@@ -29,9 +29,11 @@ class DataController {
 			} else {
 				boolean spellcheck = false;
 				for (String word : entry.getWordList().keySet()) {
-					if (StringCompare.compare(smsWord, word) <= 0.15) {
-						System.out.println(smsWord + " | " + word + " : " + StringCompare.compare(smsWord, word));
+					if (StringCompare.compare(smsWord, word) > StringCompare.PROBABILITY) {
+						//System.out.println(smsWord + " | " + word + " : " + StringCompare.compare(smsWord, word));
+						entry.add(word, entry.get(word) + 1);
 						spellcheck = true;
+						break;
 					}
 				}
 				if (!spellcheck) {
@@ -39,6 +41,9 @@ class DataController {
 				}
 			}
 		}
+
+		//System.out.println("\n" + entry.getWordList());
+		//System.out.println(smsWords.length + " | " + entry.getWordList().keySet().size());
 
 	}
 
@@ -60,6 +65,7 @@ class DataController {
 		smsText = smsText.replace("<", " ");
 		smsText = smsText.replace(">", " ");
 		smsText = smsText.replace(" @", " ");
+		smsText = smsText.replace("&", "and");
 		return smsText;
 	}
 
@@ -128,7 +134,7 @@ class DataController {
 					DataEntry dataEntry = new DataEntry();
 					for (int i = 0; i < line.toString().split(valueDelimiter, 2).length; i++) {
 						if (i == indexOfKey) {
- 							analyzeString(line.toString().split(valueDelimiter, 2)[i].trim(), dataEntry);
+							analyzeString(line.toString().split(valueDelimiter, 2)[i].trim(), dataEntry);
 						} else {
 							dataEntry.setKeyValue(line.toString().split(valueDelimiter, 2)[i].trim());
 							//System.out.println(dataEntry.getKeyValue() + " ");
