@@ -39,7 +39,6 @@ class DataController {
 				}
 			}
 		}
-		System.out.println("");
 	}
 
 	private static String replacePunctuationMarks(String smsText) {
@@ -130,7 +129,7 @@ class DataController {
  							analyzeString(line.toString().split(valueDelimiter, 2)[i].trim(), dataEntry);
 						} else {
 							dataEntry.setKeyValue(line.toString().split(valueDelimiter, 2)[i].trim());
-							System.out.println(dataEntry.getKeyValue() + " ");
+							//System.out.println(dataEntry.getKeyValue() + " ");
 						}
 					}
 					data.add(dataEntry);
