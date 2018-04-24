@@ -28,6 +28,14 @@ class DataEntry {
         return keyValue;
     }
 
+    Integer getSmsLenght(){
+        int i = 0;
+        for (Map.Entry<String, Integer> entry : wordList.entrySet()){
+            i += entry.getValue();
+        }
+        return i;
+    }
+
     Integer  get(String key){
         return wordList.getOrDefault(key, 0);
     }
