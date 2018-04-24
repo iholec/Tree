@@ -17,7 +17,7 @@ public class FrequenzyTable {
 	HashMap<String, Integer> valueCount = new HashMap<String, Integer>();
 	HashMap<String, Integer> classifyerCount = new HashMap<String, Integer>();
 
-	public int classifyerSumm = 0;
+	public int classifyerSum = 0;
 
 	private Integer valueSumm;
 
@@ -86,7 +86,7 @@ public class FrequenzyTable {
 		}
 		
 		for (Integer count : classifyerCount.values()) {
-			classifyerSumm += count;
+			classifyerSum += count;
 		}
 		
 		for (Integer count : valueCount.values()) {
