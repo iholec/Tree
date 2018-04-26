@@ -9,11 +9,11 @@ import java.util.ArrayList;
 
 class DataController {
 
-	static ArrayList<DataEntry> parseLearningData(String path, String entryDelimiter, String valueDelimiter) {
+	static ArrayList<SMSEntry> parseLearningData(String path, String entryDelimiter, String valueDelimiter) {
 		return parseLearningData(path, entryDelimiter, valueDelimiter, -1);
 	}
 
-	private static void analyzeString(String smsText, DataEntry entry) {
+	private static void analyzeString(String smsText, SMSEntry entry) {
 		//System.out.println(smsText);
 		entry.setcharacterCount(smsText.length());
 
@@ -136,11 +136,11 @@ class DataController {
 		return smsText;
 	}
 
-	private static ArrayList<DataEntry> parseLearningData(String path, String entryDelimiter, String valueDelimiter, int indexOfKey) {
+	private static ArrayList<SMSEntry> parseLearningData(String path, String entryDelimiter, String valueDelimiter, int indexOfKey) {
 
 		//todo: only split after first whitespace
 
-		ArrayList<DataEntry> data = new ArrayList<>();
+		ArrayList<SMSEntry> data = new ArrayList<>();
 
 		try {
 			BufferedReader bfr = new BufferedReader(new FileReader(path));
@@ -171,7 +171,7 @@ class DataController {
 						indexOfKey = line.toString().split(valueDelimiter, 2).length - 1;
 					}
 
-					DataEntry dataEntry = new DataEntry();
+					SMSEntry dataEntry = new SMSEntry();
 					for (int i = 0; i < line.toString().split(valueDelimiter, 2).length; i++) {
 						if (i == indexOfKey) {
 							analyzeString(line.toString().split(valueDelimiter, 2)[i].trim(), dataEntry);

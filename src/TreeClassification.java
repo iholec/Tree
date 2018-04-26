@@ -11,44 +11,30 @@ public class TreeClassification extends Classification {
 
 	HashMap<String, Integer> attributeCount = new HashMap<>();
 
+	Node root = null;
+
 	@Override
 	String findClassifyer(DataEntry entry) {
-		return buildDecisionTrees(entry.attributes[0], data);
+		return null;
 	}
 
-	private String buildDecisionTrees(String attribute, HashMap<DataEntry, String> data) {
-		//TODO filter data auf falsche baum zweige
-		FrequenzyTable fT = new FrequenzyTable("wordcount", "wordcount", data);
+	/**
+	 * Finds the best classifyer
+	 * 
+	 * @param root
+	 *            the possible attributes for the IGain
+	 * @param data
+	 *            The data to build the Tree on
+	 * @return The best fitting classifyer
+	 */
+	private String buildDecisionTrees(Node root, HashMap<DataEntry, String> data) {
 
-		//Entropy
-		double entropyS = 0;
-		for (Integer count : fT.classifyerCount.values()) {
-			if (count >= 0) {
-				entropyS -= ((double) count) / ((double) fT.classifyerSum) * Math.log((double) count) / ((double) fT.classifyerSum) / Math.log(2);
-			}
-		}
-		System.out.println("Entropy: " + entropyS);
-
-		//Gain
-		double gain = entropyS;
-		for (String sf : fT.valueCount.keySet()) {
-			ArrayList<Integer> values = new ArrayList<>();
-			for (String classifyer : fT.classifyerCount.keySet()) {
-				values.add(fT.frequencyTable.get(classifyer).get(sf));
-			}
-			gain -= ((double) fT.valueCount.get(sf)) / ((double) fT.classifyerSum) * attributeValueEntropy(values, fT.valueCount.get(sf));
-		}
-
-		System.out.println("Gain: " + gain);
-
-		//TODO remove entrys from data
-		//Find next attribute
+		System.out.println("Node: " + root);
 
 		//Abbruchbedingungen
-		String result = "";
-		if ((result = checkSingleClassifyer(data)) == null) {
-			return buildDecisionTrees(attribute, data);
-		} else if (attribute == null) {
+		if (checkSingleClassifyer(data) != null) {
+			return checkSingleClassifyer(data); //buildDecisionTrees(attributes, data);
+		} else if (data.isEmpty() || (root == null)) { //TODO testen
 			//Häufigsten classifyer finden
 			HashMap<String, Integer> classifyerCount = new HashMap<>();
 
@@ -59,14 +45,56 @@ public class TreeClassification extends Classification {
 				classifyerCount.put(classifyer, classifyerCount.get(classifyer) + 1);
 			}
 			int maxCount = 0;
-			for (String countKey : classifyerCount.keySet())) {
-				if(classifyerCount.get(countKey) > maxCount) {
+			String result = "";
+			for (String countKey : classifyerCount.keySet()) {
+				if (classifyerCount.get(countKey) > maxCount) {
+					maxCount = classifyerCount.get(countKey);
 					result = countKey;
 				}
 			}
-		} else {
+
 			return result;
+
+		} else {
+			Node nextLeaf = null;
+			double maxGain = 0;
+
+			//Entropy
+			double entropyRoot = 0;
+
+			for (Integer attributeValue : root.frequenzyTable.attributeValueSet) {
+
+				System.out.println(root.attribute + " - " + attributeValue + ": ");
+
+				double gain = 0;
+
+				HashMap<DataEntry, String> nextData = new HashMap<>(data);
+
+				DataEntry[] dataKeys = nextData.keySet().toArray(new DataEntry[nextData.keySet().size()]);
+
+				for (int i = dataKeys.length - 1; i >= 0; i--) {
+					if (dataKeys[i].getAttributes().get(root.attribute) != attributeValue) {
+						nextData.remove(dataKeys[i]);
+					}
+				}
+
+				entropyRoot = root.getEntropy(nextData);
+
+				//Alle Attribute --> bester gain
+				for (String attribute : attributes) {
+					Node node = new Node(attribute, nextData);
+					gain = node.getInformationGain(entropyRoot);
+
+					if (maxGain < gain) {
+						maxGain = gain;
+						nextLeaf = node;
+					}
+				}
+
+				return buildDecisionTrees(nextLeaf, nextData);
+			}
 		}
+		return null; //TODD ist so nicht gut (wegen rekursiv und so)
 
 	}
 
@@ -78,16 +106,6 @@ public class TreeClassification extends Classification {
 		}
 
 		return null;
-	}
-
-	private double attributeValueEntropy(ArrayList<Integer> values, double sum) {
-		double entropy = 0;
-		for (Integer count : values) {
-			if (count >= 0) {
-				entropy -= ((double) count) / ((double) sum) * Math.log((double) count) / ((double) sum) / Math.log(2);
-			}
-		}
-		return entropy;
 	}
 
 	private void buildDataTable(ArrayList<DataEntry> trainingsData) {
@@ -102,6 +120,50 @@ public class TreeClassification extends Classification {
 	@Override
 	void init(ArrayList<DataEntry> trainingsData) {
 		buildDataTable(trainingsData);
+
+		System.out.println(root);
+		System.out.println("");
+	}
+
+	void startDecisionTree() {
+		//first entropy
+		double entropy = 0;
+
+		HashMap<String, Integer> classifyerCount = new HashMap<>();
+		for (DataEntry dataEntry : data.keySet()) {
+			if (!classifyerCount.containsKey(dataEntry.getKeyValue())) {
+				classifyerCount.put(dataEntry.getKeyValue(), 0);
+			}
+			classifyerCount.put(dataEntry.getKeyValue(), classifyerCount.get(dataEntry.getKeyValue()) + 1);
+		}
+
+		int sum = 0;
+
+		for (Integer count : classifyerCount.values()) {
+			sum += count;
+		}
+
+		for (String classifyer : classifyerCount.keySet()) {
+			if (classifyerCount.get(classifyer) >= 0) {
+				entropy -= ((double) classifyerCount.get(classifyer)) / ((double) sum) * Math.log((double) classifyerCount.get(classifyer) / (double) sum) / Math.log(2);
+			}
+		}
+
+		double maxGain = 0;
+		for (String attribute : attributes) {
+			Node n = new Node(attribute, data);
+			double gain = n.getInformationGain(entropy);
+			if (gain > maxGain) {
+				root = n;
+				maxGain = gain;
+			}
+
+		}
+
+		System.out.println();
+
+		//Start tree
+		buildDecisionTrees(root, data);
 	}
 
 }

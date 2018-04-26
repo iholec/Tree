@@ -16,20 +16,21 @@ public class NaiveBayesClassification extends Classification {
 
 	@Override
 	String findClassifyer(DataEntry entry) {
+		SMSEntry smsEntry = (SMSEntry) entry; 
 		double P_Spam = Math.log((double)statistic.spamCount / (double)statistic.entries.size());
 		double P_Ham = Math.log((double)statistic.hamCount /(double) statistic.entries.size());
 
 		double spamProbability = 1;
 		double hamProbability = 1;
 
-		for (String word : entry.getWordList()) {
+		for (String word : smsEntry.getWordList()) {
 
 			double wordSpamOccurrences;
 			double spamFrequency = 1;
 			if (statistic.spamWordStatistic.containsKey(word)) {
 				wordSpamOccurrences = (double)statistic.spamWordStatistic.get(word);
 				spamFrequency = Math.log((wordSpamOccurrences + 1) / ((double)statistic.spamWords + (double)statistic.uniqueWordCount)); //Laplace Smoothing
-				for(int i = 1; i < entry.get(word); i++) {
+				for(int i = 1; i < smsEntry.get(word); i++) {
 					spamFrequency = spamFrequency * spamFrequency;
 				}
 			}
@@ -40,7 +41,7 @@ public class NaiveBayesClassification extends Classification {
 			if (statistic.hamWordStatistic.containsKey(word)) {
 				wordHamOccurrences = (double)statistic.hamWordStatistic.get(word);
 				hamFrequency = Math.log((wordHamOccurrences + 1) / ((double)statistic.hamWords + (double)statistic.uniqueWordCount)); //Laplace Smoothing
-				for(int i = 1; i < entry.get(word); i++){
+				for(int i = 1; i < smsEntry.get(word); i++){
 					hamFrequency = hamFrequency * hamFrequency;
 				}
 			}

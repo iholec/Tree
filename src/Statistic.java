@@ -8,7 +8,7 @@ import static java.lang.Math.sqrt;
 
 public class Statistic {
 
-	public List<DataEntry> entries = new ArrayList<>();
+	public List<SMSEntry> entries = new ArrayList<>();
 	public Map<String, Integer> hamWordStatistic = new HashMap<>();
 	public Map<String, Integer> spamWordStatistic = new HashMap<>();
 
@@ -26,7 +26,7 @@ public class Statistic {
 	public double standardDeviationHamLength;
 	public double standardDeviationSpamLength;
 
-	public Statistic(List<DataEntry> data) {
+	public Statistic(List<SMSEntry> data) {
 		entries = data;
 	}
 
@@ -37,7 +37,7 @@ public class Statistic {
 		double hamDeviation = 0;
 		double spamDeviation = 0;
 
-		for (DataEntry entry : entries) {
+		for (SMSEntry entry : entries) {
 			if (entry.getKeyValue().equals("ham")) {
 				hamSum += entry.getCharacterCount();
 				hamCount++;
@@ -88,7 +88,7 @@ public class Statistic {
 		averageHamLength = (double) hamSum / (double) hamCount;
 		averageSpamLength = (double) spamSum / (double) spamCount;
 
-		for (DataEntry entry : entries) {
+		for (SMSEntry entry : entries) {
 			if (entry.getKeyValue().equals("ham")) {
 				hamDeviation += (entry.getCharacterCount() - averageHamLength) * (entry.getCharacterCount() - averageHamLength);
 			} else if (entry.getKeyValue().equals("spam")) {

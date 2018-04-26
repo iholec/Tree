@@ -14,7 +14,7 @@ public abstract class Classification implements Runnable {
 
     protected int dataBags = 10;
     
-    protected ArrayList<DataEntry> dataToClassify = new ArrayList<>();
+    protected ArrayList<SMSEntry> dataToClassify = new ArrayList<>();
 
     Classification() {
         th = new Thread(this);
@@ -33,7 +33,7 @@ public abstract class Classification implements Runnable {
      * Zum hinzufügen von Trainingsdaten
      * @param learningData
      */
-    private void setLearningData(ArrayList<DataEntry> learningData) {
+    private void setLearningData(ArrayList<SMSEntry> learningData) {
 
         Collections.shuffle(learningData);
         
@@ -62,7 +62,7 @@ public abstract class Classification implements Runnable {
      * Zusammenfassung von add Data und start learn
      * @param learningData
      */
-    public void learn(ArrayList<DataEntry> learningData) {
+    public void learn(ArrayList<SMSEntry> learningData) {
         setLearningData(learningData);
         learn();
     }
@@ -85,7 +85,7 @@ public abstract class Classification implements Runnable {
         confusionMatrix = new ConfusionMatrix(new ArrayList<>(uniqueKeys));
     }
 
-    public void classify(ArrayList<DataEntry> data) {
+    public void classify(ArrayList<SMSEntry> data) {
     	dataToClassify = data;
         System.out.println("Start classifying " + data.size() + " lines of data now!");
         start = new Date(); // Zum messen der Zeit
@@ -215,7 +215,7 @@ public abstract class Classification implements Runnable {
 	public void run() {
 
 		 // Alle andern bags werden zum training verwendet
-        ArrayList<DataEntry> trainingsData = new ArrayList<DataEntry>();
+        ArrayList<DataEntry> trainingsData = new ArrayList<>();
         for (DataBag dataEntrys : dataBagList) {
 			trainingsData.addAll(dataEntrys);
 		}
@@ -223,7 +223,7 @@ public abstract class Classification implements Runnable {
         init(trainingsData);
 		
 		// find kNN
-		for (DataEntry entry : dataToClassify) {
+		for (SMSEntry entry : dataToClassify) {
 			String bestClassifyer = findClassifyer(entry);
 			
 			// System.out.println("Entry: " + entry + "\n was classified as
